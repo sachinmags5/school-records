@@ -1,0 +1,147 @@
+<html>
+	<head>
+		<title>
+			School records created by sachin
+		</title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+		<script type="text/javascript" src="bootstrap/js/jQuery-2.1.4.min.js"></script>
+		<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+		<script type="text/javascript">
+			function ajax_request(req,id)
+			{
+				var stu_name = document.getElementById('student_name1').value;
+				var stu_sub = document.getElementById('student_subject').value;
+				var stu_fee = document.getElementById('student_fee').value;
+				
+				
+
+				if(req == undefined)
+				{
+					req = '';
+					id='';
+				} else if (req == 'add_new_record')
+				{
+					id= '';
+				}
+				
+				
+				if(stu_name == '')
+				{
+					stu_name = '';
+				}
+				//alert(stu_fee);
+				if(stu_sub == '')
+				{
+					stu_sub = '';
+				}
+				if(stu_fee == '')
+				{
+					stu_fee = '';
+				}
+
+				var xmlhttp = new XMLHttpRequest();
+				
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
+					{
+						var test_div= document.getElementById('test');
+						test_div.innerHTML= xmlhttp.responseText;
+						
+					}
+				}
+				xmlhttp.open('GET','data.php?id='+id+'&req='+req+'&stu_name='+stu_name+'&stu_sub='+stu_sub+'&stu_fee='+stu_fee,true);
+				xmlhttp.send();
+
+			}
+			function edit_request(req_type,edit_id)
+			{
+				//alert(req_type);
+				
+					if(req_type == 'edit_req')
+					{
+						ed_stu_name= '';
+						ed_stu_sub = '';
+						ed_stu_fee = '';
+					}else
+					{
+						var ed_stu_name = document.getElementById('ed_student_name1').value;
+						var ed_stu_sub = document.getElementById('ed_student_subject').value;
+						var ed_stu_fee = document.getElementById('ed_student_fee').value;
+					}
+
+				var xmlhttp = new XMLHttpRequest();
+				
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
+					{
+						var form_data= document.getElementById('form_data');
+						form_data.innerHTML= xmlhttp.responseText;
+						if (req_type == 'edit_btn') 
+						{
+							window.location.reload();
+						}
+					}
+				}
+				xmlhttp.open('GET','edit.php?req_type='+req_type+'&edit_id='+edit_id+'&ed_stu_name='+ed_stu_name+'&ed_stu_sub='+ed_stu_sub+'&ed_stu_fee='+ed_stu_fee,true);
+				xmlhttp.send();
+
+			}
+			
+
+		</script>
+	</head>
+	<body onload="ajax_request();">
+		<div class="container">
+			<div class="jumbotron text-center">
+				<h1>
+					School records
+
+				</h1>
+			</div>
+			<div class="form-horizontal" id="form_data">
+				<div class="form-group">
+					<label class="control-label col-md-2">Student Name</label>
+					<div class="col-md-6">
+						<input type="text" id="student_name1" name="name" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-2">Student subject</label>
+					<div class="col-md-6">
+						<input type="text" id="student_subject" name="sub" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-2">Student fee</label>
+					<div class="col-md-6">
+						<input type="text" id="student_fee" name="fee" class="form-control">
+					</div>
+				</div>	
+				<div class="form-group">
+					
+					<div class="col-md-10 col-md-offset-2">
+						<button class="btn btn-danger" name="submit" onclick="ajax_request('add_new_record');" class="form-control">Add Record	</button>
+					</div>
+				</div>	
+			</div>
+			
+			<table class="table table-striped">
+				<thead>
+					<tr class="success">
+						<th> Sr No.</th	>
+						<th>Student Name</th>
+						<th>Student subject</th>
+						<th>student fee</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody id="test">
+					
+				</tbody>
+			</table>
+	
+		</div>
+	</body>
+</html>
